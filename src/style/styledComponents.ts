@@ -27,10 +27,10 @@ export const Label = styled.label`
 export const Input = styled.input`
   width: 340px;
   border: none;
-  border-bottom: 3px solid #222;
+  border-bottom: 3px solid ${({ theme }) => theme.black};
   margin-left: 40px;
   ::placeholder {
-    color: #cccccc;
+    color: ${({ theme }) => theme.gray};
   }
 `;
 export const ModalContainer = styled.div<{ show: boolean }>`
@@ -57,9 +57,9 @@ export const Modal = styled.div<{ show: boolean }>`
   top: 50%;
   left: 50%;
 
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.white};
   border-radius: 2px;
-  border: 5px solid #222;
+  border: 5px solid ${({ theme }) => theme.gray};
   padding: 40px 60px;
   word-break: keep-all;
   text-align: center;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import loginButton from "../assets/images/login_button.svg";
 import buttongBg from "../assets/images/buttons_bg.svg";
 import nextIcon from "../assets/images/next_icon.svg";
+import theme from "../style/theme";
 
 const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
   position: relative;
@@ -71,7 +72,7 @@ const BoxButton = ({ onClick, text, width, bgColor }) => (
     <div className="button_box">
       <img src={bgColor ? buttongBg : loginButton} alt="login button" />
       <div className="text_box">
-        <p style={{ color: (text === "저장" || text === "삭제") && "#fff" }}>{text}</p>
+        <p style={{ color: (text === "저장" || text === "삭제") && theme.white }}>{text}</p>
         {!bgColor && <img src={nextIcon} alt="next icon" />}
       </div>
     </div>

@@ -2,12 +2,12 @@ import "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    main: string;
+    black: string;
+    secondary: string;
     red: string;
-    bgColor: string;
-    indigo: string;
+    white: string;
+    gray: string;
     lightGray: string;
     darkGray: string;
-    lightIndigo: string;
   }
 }

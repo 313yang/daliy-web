@@ -64,7 +64,6 @@ const StatusButton = styled.button<{ selected: boolean }>`
   opacity: ${({ selected }) => (selected ? 1 : 0.6)};
   transform: ${({ selected }) => (selected ? "scale(1.1)" : "scale(1)")};
   transition: transform 0.1s ease-in-out;
-  /* border: 2px solid ${({ selected }) => (selected ? "#222" : "#fff")}; */
   border-radius: 4px;
 `;
 
@@ -74,7 +73,7 @@ const UpdateBox = styled.div`
   position: absolute;
   top: 39px;
   right: 64px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.white};
   img {
     height: 30px;
   }
