@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import loginButton from "../assets/images/login_button.svg";
+import buttongBg from "../assets/images/buttons_bg.svg";
 import nextIcon from "../assets/images/next_icon.svg";
 
-const ButtonContainer = styled.button<{ width: string }>`
+const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -16,7 +17,7 @@ const ButtonContainer = styled.button<{ width: string }>`
     justify-content: center;
     position: relative;
     > img {
-      width: 120%;
+      width: ${({ bgColor }) => (bgColor ? "95%" : " 120%")};
     }
     .text_box {
       display: flex;
@@ -32,6 +33,13 @@ const ButtonContainer = styled.button<{ width: string }>`
       }
     }
   }
+  > .bg_colorBox {
+    position: absolute;
+    margin-left: 10px;
+    width: ${({ width }) => (width === "50%" ? "293px" : "225px")};
+    height: ${({ width }) => (width === "50%" ? "80px" : "63px")};
+    background-color: ${({ bgColor }) => bgColor};
+  }
   > .rainbow_box {
     position: absolute;
     width: 0;
@@ -44,22 +52,30 @@ const ButtonContainer = styled.button<{ width: string }>`
       /* transform: scaley(100%, 0, 0); */
 
       width: ${({ width }) => (width ? "500px" : "760px")};
-      background: linear-gradient(90deg, #ff3e30 -0.9%, #ff9f46 16.84%, #edc90b 33.49%, #94e70d 50.15%, #72ccff 66.27%, #4394ff 78.63%, #a45bff 95.29%);
+      background: linear-gradient(
+        90deg,
+        #ff3e30 -0.9%,
+        #ff9f46 16.84%,
+        #edc90b 33.49%,
+        #94e70d 50.15%,
+        #72ccff 66.27%,
+        #4394ff 78.63%,
+        #a45bff 95.29%
+      );
     }
   }
 `;
 
-const BoxButton = ({ onClick, text, width }) => (
-  <ButtonContainer width={width} onClick={onClick}>
+const BoxButton = ({ onClick, text, width, bgColor }) => (
+  <ButtonContainer width={width} onClick={onClick} bgColor={bgColor}>
     <div className="button_box">
-      <img src={loginButton} alt="login button" />
+      <img src={bgColor ? buttongBg : loginButton} alt="login button" />
       <div className="text_box">
-        <p>{text}</p>
-        <img src={nextIcon} alt="next icon" />
+        <p style={{ color: (text === "저장" || text === "삭제") && "#fff" }}>{text}</p>
+        {!bgColor && <img src={nextIcon} alt="next icon" />}
       </div>
     </div>
-
-    <div className="rainbow_box" />
+    {bgColor ? <div className="bg_colorBox" /> : <div className="rainbow_box" />}
   </ButtonContainer>
 );
 

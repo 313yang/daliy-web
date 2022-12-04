@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+export const Button = styled.button.attrs({ type: "button" })``;
 export const LinkButton = styled.button.attrs({ type: "button" })`
   margin-top: 46px;
   font-weight: 500;
@@ -28,6 +29,9 @@ export const Input = styled.input`
   border: none;
   border-bottom: 3px solid #222;
   margin-left: 40px;
+  ::placeholder {
+    color: #cccccc;
+  }
 `;
 export const ModalContainer = styled.div<{ show: boolean }>`
   flex-direction: column;
@@ -47,8 +51,8 @@ export const Modal = styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 33%;
-  height: fit-contents;
+  width: 40%;
+  height: fit-content;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -56,7 +60,7 @@ export const Modal = styled.div<{ show: boolean }>`
   background-color: #fff;
   border-radius: 2px;
   border: 5px solid #222;
-  padding: 4vw;
+  padding: 40px 60px;
   word-break: keep-all;
   text-align: center;
   transform: ${({ show }) => (show ? "translate(-50%, -50%)" : "translate(-50%, 200%)")};
@@ -68,4 +72,10 @@ export const Modal = styled.div<{ show: boolean }>`
     white-space: pre-line;
     line-height: 1.4;
   }
+`;
+export const Buttons = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 30px;
 `;

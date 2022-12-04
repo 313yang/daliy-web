@@ -11,6 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow-y: hidden;
   > header {
     font-size: 69px;
     margin-bottom: 120px;

@@ -92,10 +92,8 @@ const Auth = () => {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            if (errorCode?.includes("email-already-in-use")) {
-              console.log(errorCode, errorCode?.includes("email-already-in-use"));
-              return handleError("이미 존재하는 이메일입니다.");
-            }
+            if (errorCode?.includes("email-already-in-use")) handleError("이미 존재하는 이메일입니다.");
+            else if (errorCode?.includes("weak-password")) handleError("비밀번호를 6자리 이상 설정해주세요");
           });
       } else {
         signInWithEmailAndPassword(authService, email, password)
@@ -147,10 +145,8 @@ const Auth = () => {
         // The AuthCredential type that was used.
         const credential = name === "google" ? GoogleAuthProvider.credentialFromError(error) : GithubAuthProvider.credentialFromError(error);
         // ...
+        handleError("로그인에 실패했어요 ㅜㅜ");
       });
-    //     provider = new firebaseInstance()?.auth.GithubAuthProvider();
-
-    //   await authService?.signInWithRedirect(provider);
   };
 
   return (
