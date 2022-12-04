@@ -13,7 +13,7 @@ import face5 from "../assets/images/face5.svg";
 import face6 from "../assets/images/face6.svg";
 import face7 from "../assets/images/face7.svg";
 
-const returnFaceType = (face: number) => {
+export const returnFaceType = (face: number) => {
   switch (face) {
     case 1:
       return face1;
@@ -53,24 +53,30 @@ const CalendarHeader = styled.div`
   height: 5vh;
   font-size: 40px;
 `;
+
+const CalendarGrid = styled.div`
+  display: grid;
+
+  margin: auto;
+  grid-template-columns: repeat(7, 1fr);
+  justify-content: center;
+`;
+
 const Calendar = styled.div<{ isLimitedDate: boolean }>`
-  background-image: ${({ isLimitedDate }) => (isLimitedDate ? `url(${calendarBg56})` : `url(${calendarBg})`)};
+  background-image: ${({ isLimitedDate }) =>
+    isLimitedDate ? `url(${calendarBg56})` : `url(${calendarBg})`};
   width: 1470px;
   height: fit-content;
   background-size: 100% 100%;
-`;
-const CalendarGrid = styled.div`
-  display: grid;
-  width: 98%;
-  margin: auto;
-  margin-top: 7.6vh;
-  grid-template-columns: repeat(7, 1fr);
+  ${CalendarGrid} {
+    margin-top: ${({ isLimitedDate }) => (isLimitedDate ? "99px" : "105px")};
+    width: ${({ isLimitedDate }) => (isLimitedDate ? "96%" : "98%")};
+  }
 `;
 
 const CalendarList = styled.div<{ week: string; isAfter: boolean }>`
-  height: 11vh;
-  padding: 10%;
-
+  height: 145px;
+  padding: 10px;
   font-size: 22px;
   font-weight: 700;
   display: flex;
@@ -95,6 +101,11 @@ const CalendarList = styled.div<{ week: string; isAfter: boolean }>`
     width: 100%;
     font-size: 16px;
     text-align: center;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 180px;
   }
 `;
 const Home = () => {
@@ -102,7 +113,9 @@ const Home = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [days, setDays] = useState([]);
-  const [limitDays, setLimitDays] = useState(new Date(year, month - 1, 1).getDay() - new Date(year, month, 0).getDate());
+  const [limitDays, setLimitDays] = useState(
+    new Date(year, month - 1, 1).getDay() - new Date(year, month, 0).getDate()
+  );
   const [selectedDay, setSelectedDay] = useState(null);
   const [userId, setUserId] = useState("");
   const WEEKDAY = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -118,9 +131,13 @@ const Home = () => {
     }
     if (diaryList)
       for (let i = 1; i < new Date(+year, +month, 0).getDate() + 1; i++) {
-        dayArr.push({ date: `${year}${month}${i < 10 ? `0${i}` : i}`, week: WEEKDAY[new Date(`${year}-${month}-${i < 10 ? `0${i}` : i}`).getDay()] });
+        dayArr.push({
+          date: `${year}${month}${i < 10 ? `0${i}` : i}`,
+          week: WEEKDAY[new Date(`${year}-${month}-${i < 10 ? `0${i}` : i}`).getDay()],
+        });
         for (let j = 0; j < diaryList.length; j++) {
-          if (diaryList[j].date === `${year}${month}${i < 10 ? `0${i}` : i}`) dayArr[i - 1] = { ...dayArr[i - 1], ...diaryList[j] };
+          if (diaryList[j].date === `${year}${month}${i < 10 ? `0${i}` : i}`)
+            dayArr[i - 1] = { ...dayArr[i - 1], ...diaryList[j] };
         }
       }
 
@@ -173,7 +190,13 @@ const Home = () => {
   };
   return (
     <>
-      <DiaryModal show={selectedDay !== null} onClose={() => setSelectedDay(null)} selected={selectedDay} userId={userId} fetchApi={() => getUsersDiary(userId)} />
+      <DiaryModal
+        show={selectedDay !== null}
+        onClose={() => setSelectedDay(null)}
+        selected={selectedDay}
+        userId={userId}
+        fetchApi={() => getUsersDiary(userId)}
+      />
       <Container>
         <CalendarHeader>
           <button onClick={handleSetPrevMonth}>&lt;</button>
@@ -187,7 +210,11 @@ const Home = () => {
             {days.map((day, index) => (
               <CalendarList
                 isAfter={moment(day.date).isAfter(moment().format("YYYYMMDD"))}
-                onClick={() => (moment(day.date).isBefore(moment().format("YYYYMMDD")) || moment().format("YYYYMMDD") === day.date) && setSelectedDay(day)}
+                onClick={() =>
+                  (moment(day.date).isBefore(moment().format("YYYYMMDD")) ||
+                    moment().format("YYYYMMDD") === day.date) &&
+                  setSelectedDay(day)
+                }
                 key={index}
                 week={day?.week}
               >

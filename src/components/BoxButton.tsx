@@ -36,8 +36,8 @@ const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
   > .bg_colorBox {
     position: absolute;
     margin-left: 10px;
-    width: 305px;
-    height: 80px;
+    width: ${({ width }) => (width === "50%" ? "293px" : "225px")};
+    height: ${({ width }) => (width === "50%" ? "80px" : "63px")};
     background-color: ${({ bgColor }) => bgColor};
   }
   > .rainbow_box {
@@ -52,7 +52,16 @@ const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
       /* transform: scaley(100%, 0, 0); */
 
       width: ${({ width }) => (width ? "500px" : "760px")};
-      background: linear-gradient(90deg, #ff3e30 -0.9%, #ff9f46 16.84%, #edc90b 33.49%, #94e70d 50.15%, #72ccff 66.27%, #4394ff 78.63%, #a45bff 95.29%);
+      background: linear-gradient(
+        90deg,
+        #ff3e30 -0.9%,
+        #ff9f46 16.84%,
+        #edc90b 33.49%,
+        #94e70d 50.15%,
+        #72ccff 66.27%,
+        #4394ff 78.63%,
+        #a45bff 95.29%
+      );
     }
   }
 `;
@@ -62,7 +71,7 @@ const BoxButton = ({ onClick, text, width, bgColor }) => (
     <div className="button_box">
       <img src={bgColor ? buttongBg : loginButton} alt="login button" />
       <div className="text_box">
-        <p style={{ color: text === "저장" && "#fff" }}>{text}</p>
+        <p style={{ color: (text === "저장" || text === "삭제") && "#fff" }}>{text}</p>
         {!bgColor && <img src={nextIcon} alt="next icon" />}
       </div>
     </div>
