@@ -73,3 +73,9 @@ export const Modal = styled.div<{ show: boolean }>`
     line-height: 1.4;
   }
 `;
+export const Buttons = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 30px;
+`;
