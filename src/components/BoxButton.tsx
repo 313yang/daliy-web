@@ -17,7 +17,7 @@ const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
     justify-content: center;
     position: relative;
     > img {
-      width: ${({ bgColor }) => (bgColor ? "95%" : " 120%")};
+      width: ${({ bgColor }) => (bgColor ? "300px" : " 120%")};
     }
     .text_box {
       display: flex;
@@ -35,7 +35,8 @@ const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
   }
   > .bg_colorBox {
     position: absolute;
-    margin-left: 10px;
+    left: 50%;
+    transform: translate(-50%, 0px);
     width: ${({ width }) => (width === "50%" ? "293px" : "225px")};
     height: ${({ width }) => (width === "50%" ? "80px" : "63px")};
     background-color: ${({ bgColor }) => bgColor};
