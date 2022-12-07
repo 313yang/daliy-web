@@ -37,7 +37,7 @@ const Topbar = () => {
   const logout = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
+        localStorage.removeItem("token");
         setShowLogoutBox(false);
         navigate("/");
       })
@@ -83,9 +83,9 @@ const Topbar = () => {
         </>
       )}
 
-      <Button>
+      {/* <Button>
         <img src={lightMode} alt="goback icon" />
-      </Button>
+      </Button> */}
     </Container>
   );
 };
