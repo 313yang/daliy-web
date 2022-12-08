@@ -1,3 +1,4 @@
+import { Auth, signOut } from "firebase/auth";
 import { collection, doc, documentId, getDocs, query, setDoc, where } from "firebase/firestore";
 import { db } from "./fbase";
 
@@ -56,4 +57,15 @@ export const deleteDiary = async (date, userId) => {
   const userRef = doc(db, "users", userId);
   await setDoc(userRef, { diary: [...filterArr] }, { merge: false });
   return true;
+};
+
+export const logout = (auth: Auth, fn?: any) => {
+  signOut(auth)
+    .then(() => {
+      localStorage.removeItem("token");
+      fn && fn();
+    })
+    .catch((error) => {
+      // An error happened.
+    });
 };

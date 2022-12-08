@@ -37,8 +37,8 @@ const ButtonContainer = styled.button<{ width: string; bgColor: string }>`
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0px);
-    width: ${({ width }) => (width === "50%" ? "293px" : "225px")};
-    height: ${({ width }) => (width === "50%" ? "80px" : "63px")};
+    width: 293px;
+    height: 80px;
     background-color: ${({ bgColor }) => bgColor};
   }
   > .rainbow_box {
