@@ -87,6 +87,7 @@ const DiaryEnroll = ({
   userId,
   selected,
   isUpdate,
+  setSuccessMsg,
 }) => {
   const faceArr = [
     { id: 1, img: face1, status: "짜증" },
@@ -115,6 +116,7 @@ const DiaryEnroll = ({
       setIsSuccess(true);
       fetchApi();
       resetOnClose();
+      setSuccessMsg("일기가 저장됐어요! ^^*");
     }
   };
 
@@ -192,13 +194,14 @@ const DiaryModal = ({ show, onClose, selected, userId, fetchApi }) => {
   const [isError, setIsError] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isWarning, setIsWarning] = useState(false);
-
+  const [successMsg, setSuccessMsg] = useState("");
   const handleDeleteDiary = async () => {
     const status = await deleteDiary(selected?.date, userId);
     if (status) {
       setIsSuccess(true);
       setIsWarning(false);
       fetchApi();
+      setSuccessMsg("일기가 삭제됐어요!");
     }
   };
 
@@ -211,7 +214,7 @@ const DiaryModal = ({ show, onClose, selected, userId, fetchApi }) => {
           onClose();
           setIsUpdate(false);
         }}
-        msg={!selected?.face && !isUpdate ? "일기가 저장됐어요!^^*" : "일기가  삭제됐어요!"}
+        msg={successMsg}
       />
       <ErrorModal
         show={isError}
@@ -244,6 +247,7 @@ const DiaryModal = ({ show, onClose, selected, userId, fetchApi }) => {
               fetchApi={fetchApi}
               userId={userId}
               selected={selected}
+              setSuccessMsg={setSuccessMsg}
             />
           )}
         </Modal>

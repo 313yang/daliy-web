@@ -7,6 +7,8 @@ import lightMode from "../assets/images/light.svg";
 import faceIcon from "../assets/images/user.svg";
 import logoutBox from "../assets/images/logout_box.svg";
 import { Button } from "../style/styledComponents";
+import { getToken } from "../utils/token";
+import { logout } from "../lib/api";
 
 const Container = styled.div`
   display: flex;
@@ -34,17 +36,14 @@ const Topbar = () => {
   const [showLogoutBox, setShowLogoutBox] = useState(false);
   const auth = getAuth();
   const user = auth.currentUser;
-  const logout = () => {
-    signOut(auth)
-      .then(() => {
-        localStorage.removeItem("token");
-        setShowLogoutBox(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+
+  const handleLogout = () => {
+    logout(auth, () => {
+      setShowLogoutBox(false);
+      window.location.href = "/";
+    });
   };
+
   function handleClickOutside(e) {
     if (ref?.current && !ref?.current.contains(e.target as Node)) {
       setShowLogoutBox(false);
@@ -66,11 +65,11 @@ const Topbar = () => {
         </Button>
       ) : (
         <>
-          {pathname === "/home" ? (
+          {getToken() ? (
             <>
               {showLogoutBox && (
                 <LoginBox ref={ref}>
-                  <Button onClick={logout}>로그아웃</Button>
+                  <Button onClick={handleLogout}>로그아웃</Button>
                 </LoginBox>
               )}
               <Button onClick={() => setShowLogoutBox(!showLogoutBox)}>

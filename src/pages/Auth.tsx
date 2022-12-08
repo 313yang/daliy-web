@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -16,7 +16,8 @@ import { authService } from "../lib/fbase";
 import { ErrorModal, SuccessModal } from "../components/modals/Modals";
 import googleButton from "../assets/images/google_social_button.svg";
 import githubButton from "../assets/images/github_social_button.svg";
-import { setToken } from "../utils/token";
+import { getToken, setToken } from "../utils/token";
+import { logout } from "../lib/api";
 
 const githubProvider = new GithubAuthProvider();
 const googleProvider = new GoogleAuthProvider();
@@ -86,7 +87,7 @@ const Auth = () => {
       setForm({ ...form, [name]: value });
     }
   };
-  console.log(window.location.href);
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -94,7 +95,7 @@ const Auth = () => {
         createUserWithEmailAndPassword(authService, email, password)
           .then((userCredential) => {
             // Signed in
-            const user = userCredential.user;
+            const { user } = userCredential;
             console.log(user, getAuth());
             if (user) handleSuccess("회원가입이 완료됐습니다 ^^*");
           })
@@ -113,7 +114,7 @@ const Auth = () => {
             const { user } = userCredential;
             console.log(user);
             user.getIdToken().then((token) => setToken(token));
-            if (user) navigate("/home");
+            if (user) window.location.href = "/";
             // ...
           })
           .catch((error) => {
@@ -130,12 +131,14 @@ const Auth = () => {
     }
   };
 
+  const returnProvider = (name: string) => {
+    if (name === "google") return googleProvider;
+    else return githubProvider;
+  };
   const onSocialLogin = async ({ target }) => {
     const { name } = target;
 
-    //   let provider;
-
-    signInWithPopup(authService, name === "google" ? googleProvider : githubProvider)
+    signInWithPopup(authService, returnProvider(name))
       .then((result) => {
         console.log(result);
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -145,11 +148,8 @@ const Auth = () => {
             : GithubAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         setToken(token);
+        window.location.href = "/";
         // The signed-in user info.
-        const { user } = result;
-        console.log(user);
-        if (user) navigate("/home");
-        // ...
       })
       .catch((error) => {
         console.log(error);
@@ -164,6 +164,9 @@ const Auth = () => {
       });
   };
 
+  useEffect(() => {
+    if (getToken()) logout(getAuth());
+  }, []);
   return (
     <Container>
       <ErrorModal show={isError} onClose={() => setIsError(false)} msg={errorMsg} />

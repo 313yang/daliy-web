@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Topbar />
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={getToken() ? <Home /> : <Main />} />
         <Route path="/auth/:type" element={<Auth />} />
         {getToken() && <Route path="/home" element={<Home />} />}
         <Route path="/*" element={<Navigate replace to="/" />} />
