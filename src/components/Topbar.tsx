@@ -13,9 +13,9 @@ import { logout } from "../lib/api";
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 30px;
   position: absolute;
-  width: 100%;
+  top: 10px;
+  left: 10px;
 `;
 export const LoginBox = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ export const LoginBox = styled.div`
   left: 50px;
 `;
 const Topbar = () => {
-  const ref = useRef();
+  const ref = useRef(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [showLogoutBox, setShowLogoutBox] = useState(false);
@@ -44,21 +44,8 @@ const Topbar = () => {
     });
   };
 
-  function handleClickOutside(e) {
-    if (ref?.current && !ref?.current.contains(e.target as Node)) {
-      setShowLogoutBox(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-
   return (
-    <Container>
+    <Container onClick={() => setShowLogoutBox(!showLogoutBox)}>
       {pathname?.includes("auth") ? (
         <Button onClick={() => navigate("/")}>
           <img style={{ transform: "rotate(-180deg)" }} src={goBack} alt="goback icon" />

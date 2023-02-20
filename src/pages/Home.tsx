@@ -31,15 +31,14 @@ export const returnFaceType = (face: number) => {
       return face7;
   }
 };
-import moment from "moment";
+import moment, { weekdays } from "moment";
 import DiaryModal from "../components/modals/DiaryModal";
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin-top: 50px;
   > header {
     font-size: 69px;
     margin-bottom: 120px;
@@ -49,29 +48,47 @@ const CalendarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 1450px;
+  width: 80vw;
   height: 5vh;
   font-size: 40px;
 `;
+const Calendar = styled.div<{ isLimitedDate: boolean }>`
+  margin: 30px auto;
+  border: 5px solid #000;
+  border-radius: 4px;
+  width: 80vw;
+  height: fit-content;
+  max-height: ${({ isLimitedDate }) => (isLimitedDate ? "98vh" : "83vh")};
+`;
+const CalenderWeek = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: 800;
+  font-size: 24px;
+  height: 60px;
+  width: 100%;
 
+  border-bottom: 5px solid #000;
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    :first-child {
+      color: #ff5c50;
+    }
+    :last-child {
+      color: #4394ff;
+    }
+    :not(:last-child) {
+      border-right: 5px solid #000;
+    }
+  }
+`;
 const CalendarGrid = styled.div`
   display: grid;
-
   margin: auto;
   grid-template-columns: repeat(7, 1fr);
   justify-content: center;
-`;
-
-const Calendar = styled.div<{ isLimitedDate: boolean }>`
-  background-image: ${({ isLimitedDate }) =>
-    isLimitedDate ? `url(${calendarBg56})` : `url(${calendarBg})`};
-  width: 1470px;
-  height: fit-content;
-  background-size: 100% 100%;
-  ${CalendarGrid} {
-    margin-top: ${({ isLimitedDate }) => (isLimitedDate ? "99px" : "105px")};
-    width: ${({ isLimitedDate }) => (isLimitedDate ? "96%" : "98%")};
-  }
 `;
 
 const CalendarList = styled.div<{ week: string; isAfter: boolean }>`
@@ -105,7 +122,7 @@ const CalendarList = styled.div<{ week: string; isAfter: boolean }>`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 180px;
+    width: calc(71vw / 7);
   }
 `;
 const Home = () => {
@@ -132,7 +149,7 @@ const Home = () => {
     if (diaryList)
       for (let i = 1; i < new Date(+year, +month, 0).getDate() + 1; i++) {
         dayArr.push({
-          date: `${year}${month}${i < 10 ? `0${i}` : i}`,
+          date: `${year}${month < 10 ? `0${month}` : month}${i < 10 ? `0${i}` : i}`,
           week: WEEKDAY[new Date(`${year}-${month}-${i < 10 ? `0${i}` : i}`).getDay()],
         });
         for (let j = 0; j < diaryList.length; j++) {
@@ -205,19 +222,27 @@ const Home = () => {
           </h1>
           <button onClick={handleSetNextMonth}>&gt;</button>
         </CalendarHeader>
-        <Calendar isLimitedDate={limitDays > 35}>
+        <Calendar isLimitedDate={limitDays > 32}>
+          <CalenderWeek>
+            {WEEKDAY.map((days) => (
+              <div key={days}>{days}</div>
+            ))}
+          </CalenderWeek>
           <CalendarGrid>
             {days.map((day, index) => (
               <CalendarList
                 isAfter={moment(day.date).isAfter(moment().format("YYYYMMDD"))}
                 onClick={() =>
-                  (moment(day.date).isBefore(moment().format("YYYYMMDD")) ||
-                    moment().format("YYYYMMDD") === day.date) &&
-                  setSelectedDay(day)
+                  !moment(day.date).isAfter(moment().format("YYYYMMDD")) && setSelectedDay(day)
                 }
                 key={index}
                 week={day?.week}
               >
+                {console.log(
+                  day.date,
+                  moment().format("YYYYMMDD"),
+                  moment(day.date).isAfter(moment().format("YYYYMMDD"))
+                )}
                 <div>
                   <h4> {day?.date?.slice(-2)} </h4>{" "}
                   {/* <button style={{ display: "flex" }}>
@@ -232,7 +257,7 @@ const Home = () => {
         </Calendar>
         {/* <Calendar localizer={localizer} /> */}
       </Container>
-      <Navbar />
+      {/* <Navbar /> */}
     </>
   );
 };
