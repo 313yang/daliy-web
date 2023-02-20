@@ -29,6 +29,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  > .testLogin_button {
+    position: absolute;
+    bottom: 10vh;
+    font-size: 12px;
+    opacity: 0.8;
+  }
 `;
 const SocialButtonContainer = styled.div`
   display: flex;
@@ -88,7 +94,7 @@ const Auth = () => {
     }
   };
 
-  const handleOnSubmit = async (event) => {
+  const handleOnSubmit = async (event, testLogin?: { email: string; password: string }) => {
     event.preventDefault();
     try {
       if (type === "join") {
@@ -108,7 +114,11 @@ const Auth = () => {
               handleError("비밀번호를 6자리 이상 설정해주세요");
           });
       } else {
-        signInWithEmailAndPassword(authService, email, password)
+        signInWithEmailAndPassword(
+          authService,
+          !!testLogin ? testLogin.email : email,
+          !!testLogin ? testLogin.password : password
+        )
           .then((userCredential) => {
             // Signed in
             const { user } = userCredential;
@@ -235,6 +245,12 @@ const Auth = () => {
       ) : (
         <LinkButton onClick={() => navigate("/auth/login")}>이미 회원이신가요?</LinkButton>
       )}
+      <button
+        className="testLogin_button"
+        onClick={(e) => handleOnSubmit(e, { email: "test@test.com", password: "123123q!" })}
+      >
+        {"< TEST 아이디로 로그인하기 >"}
+      </button>
     </Container>
   );
 };

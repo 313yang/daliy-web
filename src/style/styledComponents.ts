@@ -51,7 +51,7 @@ export const Modal = styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
+  width: 900px;
   height: fit-content;
   position: absolute;
   top: 50%;

@@ -13,9 +13,9 @@ import { logout } from "../lib/api";
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 30px;
   position: absolute;
-  width: 100%;
+  top: 0;
+  left: 0;
 `;
 export const LoginBox = styled.div`
   display: flex;
@@ -25,17 +25,15 @@ export const LoginBox = styled.div`
   background: center no-repeat url(${logoutBox});
   background-size: 100%;
   width: 100px;
-  height: 100%;
-  top: 70px;
-  left: 50px;
+  height: 100px;
+  top: 60px;
+  left: 20px;
 `;
 const Topbar = () => {
-  const ref = useRef();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [showLogoutBox, setShowLogoutBox] = useState(false);
   const auth = getAuth();
-  const user = auth.currentUser;
 
   const handleLogout = () => {
     logout(auth, () => {
@@ -43,19 +41,6 @@ const Topbar = () => {
       window.location.href = "/";
     });
   };
-
-  function handleClickOutside(e) {
-    if (ref?.current && !ref?.current.contains(e.target as Node)) {
-      setShowLogoutBox(false);
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
 
   return (
     <Container>
@@ -67,14 +52,29 @@ const Topbar = () => {
         <>
           {getToken() ? (
             <>
-              {showLogoutBox && (
-                <LoginBox ref={ref}>
-                  <Button onClick={handleLogout}>로그아웃</Button>
-                </LoginBox>
-              )}
-              <Button onClick={() => setShowLogoutBox(!showLogoutBox)}>
+              <Button
+                style={{ top: 10, left: 10, position: "absolute", zIndex: 111, cursor: "pointer" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowLogoutBox(!showLogoutBox);
+                }}
+              >
                 <img src={faceIcon} alt="goback icon" />
               </Button>
+              {showLogoutBox && (
+                <div
+                  onClick={() => setShowLogoutBox(!showLogoutBox)}
+                  style={{
+                    width: "100vw",
+                    height: "100vh",
+                    position: "absolute",
+                  }}
+                >
+                  <LoginBox onClick={handleLogout}>
+                    <Button>로그아웃</Button>
+                  </LoginBox>
+                </div>
+              )}
             </>
           ) : (
             <div />
