@@ -1,5 +1,5 @@
 ## 무지개같은 하루였어 :)
-https://www.rainbow-daily.ga/
+[https://www.rainbow-daily.ga/](https://main.d1498h8w7oqfnr.amplifyapp.com/)
 
 ### 사용기술
 `Vite` `React` `Typescript` `Firebase` `styled-components`
